@@ -40,12 +40,13 @@ func main() {
             fmt.Println("bad input:",err)
             os.Exit(1)
         }
-        if(input_a == input_b){
+
+        diff:=input_b-input_a
+        
+        if (input_a == input_b || absInt(diff)<1 || absInt(diff)>3 ){
             reader.ReadLine()
             continue
         }
-
-        diff:=input_b-input_a
 
         var bad = false
         var prev_input = input_b
@@ -60,19 +61,18 @@ func main() {
                 fmt.Println("bad input:",err)
                 os.Exit(1)
             }
-            new_diff := input-prev_input
-            a:=absInt(new_diff-diff)
-            b:=new_diff*diff
-            sign_match:= absInt(b)==b
+
+            diff2 := input-prev_input
+            pos_cond := (diff2>0 && diff<0) || (diff2<0 && diff>0)
+            size_cond := absInt(diff2)<1 || absInt(diff2)>3
             
-            if(a>3 || a<1 ||  !sign_match){
+            if (diff2 == 0 || pos_cond || size_cond ) {
                 reader.ReadLine()
                 bad = true
                 break
             }
 
             prev_input = input
-            diff = new_diff
 
         }
         if !bad {
