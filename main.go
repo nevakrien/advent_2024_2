@@ -6,6 +6,15 @@ import (
     "bufio"
 )
 
+
+func absInt(n int) int {
+    if n < 0 {
+        return -n
+    }
+    return n
+}
+
+
 func main() {
     // Open the file
     file, err := os.Open("input.txt")
@@ -31,19 +40,12 @@ func main() {
             fmt.Println("bad input:",err)
             os.Exit(1)
         }
-
-        var base bool
-        var increasing *bool
-
-        if input_a==input_b {
-            // fmt.Println("total_count ",total_count)
-            // fmt.Println("unexpected a == b == ",input_a)
-            // os.Exit(1)
-            increasing = nil
-        }else{
-            base = (input_a<input_b)
-            increasing = &base
+        if(input_a == input_b){
+            reader.ReadLine()
+            continue
         }
+
+        diff:=input_b-input_a
 
         var bad = false
         var prev_input = input_b
@@ -58,20 +60,19 @@ func main() {
                 fmt.Println("bad input:",err)
                 os.Exit(1)
             }
-
-            if (increasing == nil) {
-                if prev_input!= input{
-                    base = prev_input<input
-                    increasing = &base
-                }
-            } else if ((prev_input<input) != *increasing){
-                //bad flush number
+            new_diff := input-prev_input
+            a:=absInt(new_diff-diff)
+            b:=new_diff*diff
+            sign_match:= absInt(b)==b
+            
+            if(a>3 || a<1 ||  !sign_match){
                 reader.ReadLine()
                 bad = true
                 break
             }
 
             prev_input = input
+            diff = new_diff
 
         }
         if !bad {
