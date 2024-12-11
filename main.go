@@ -59,12 +59,18 @@ func main() {
                 os.Exit(1)
             }
 
-            if(increasing!=nil && (prev_input<input) != *increasing){
+            if (increasing == nil) {
+                if prev_input!= input{
+                    base = prev_input<input
+                    increasing = &base
+                }
+            } else if ((prev_input<input) != *increasing){
                 //bad flush number
                 reader.ReadLine()
                 bad = true
                 break
             }
+
             prev_input = input
 
         }
