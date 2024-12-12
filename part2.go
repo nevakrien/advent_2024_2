@@ -106,35 +106,48 @@ func main() {
             break
         }
         
-        // breakPoint := checkLine(arr,-1)
-        // if  breakPoint == -1 {
-        //     safe_count++
-        //     // fmt.Println("pass",total_count,"no fixup")
-        //     continue
-        // }
-
-        // if checkLine(arr,breakPoint) == -1{
-        //     safe_count++
-        //     // fmt.Println("pass",total_count)
-        //     continue
-        // }
-
-        // if checkLine(arr,breakPoint+1) == -1{
-        //     safe_count++
-        //     // fmt.Println("pass",total_count)
-        //     continue
-        // }
-        for j:=-1;j<len(arr);j++{
-            if  checkLine(arr,j) == -1 {
-                safe_count++
-                // fmt.Println("pass",total_count,"no fixup")
-                goto end;
-            }
+        breakPoint := checkLine(arr,-1)
+        if  breakPoint == -1 {
+            safe_count++
+            // fmt.Println("pass",total_count,"no fixup")
+            continue
         }
+
+        if checkLine(arr,breakPoint) == -1{
+            safe_count++
+            // fmt.Println("pass",total_count)
+            continue
+        }
+
+        if checkLine(arr,breakPoint+1) == -1{
+            safe_count++
+            // fmt.Println("pass",total_count)
+            continue
+        }
+
+        if checkLine(arr,1) == -1{
+            safe_count++
+            // fmt.Println("pass",total_count)
+            continue
+        }
+
+        if checkLine(arr,0) == -1{
+            safe_count++
+            // fmt.Println("pass",total_count)
+            continue
+        }
+
+        // for j:=-1;j<len(arr);j++{
+        //     if  checkLine(arr,j) == -1 {
+        //         safe_count++
+        //         // fmt.Println("pass",total_count,"no fixup")
+        //         goto end;
+        //     }
+        // }
 
 
         fmt.Println("defective",total_count)
-        end:
+        // end:
     }
     
     fmt.Println("total_count:",total_count,"safe_count:",safe_count)
