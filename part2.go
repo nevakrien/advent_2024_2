@@ -26,6 +26,54 @@ func gatherLine(reader *bufio.Reader ) []int {
     }
 }
 
+func checkLine(arr []int,ignore int) int {        
+    var input_a,input_b,aidx,bidx int
+
+    if(ignore == 0){
+        input_a = arr[1]
+        input_b = arr[2]
+        aidx = 1
+        bidx = 2
+    } else if(ignore==1) {
+        input_a = arr[0]
+        input_b = arr[2]
+        aidx = 0
+        bidx = 2
+    } else{
+        input_a = arr[0]
+        input_b = arr[1]
+        aidx = 0
+        bidx = 1
+    }
+    
+    diff:=input_b-input_a
+    
+    if (input_a == input_b || absInt(diff)<1 || absInt(diff)>3 ){
+        return aidx
+    }
+
+    var prev_input = input_b
+    for i:=bidx+1;i<len(arr);i++ {
+        if i==ignore {
+            continue
+        }
+        input:=arr[i]
+
+        diff2 := input-prev_input
+        pos_cond := (diff2>0 && diff<0) || (diff2<0 && diff>0)
+        size_cond := absInt(diff2)<1 || absInt(diff2)>3
+        
+        if (diff2 == 0 || pos_cond || size_cond ) {
+            return i-1
+        }
+
+        prev_input = input
+
+    }
+
+    return -1
+}
+
 func main() {
     // Open the file
     file, err := os.Open("input.txt")
@@ -50,37 +98,22 @@ func main() {
             // fmt.Println("empty")
             break
         }
-        var input_a,input_b int
         
-        input_a = arr[0]
-        input_b = arr[1]
-        diff:=input_b-input_a
-        
-        if (input_a == input_b || absInt(diff)<1 || absInt(diff)>3 ){
+        breakPoint := checkLine(arr,-1)
+        if  breakPoint == -1 {
+            safe_count++
             continue
         }
-
-        var bad = false
-        var prev_input = input_b
-        //read inputs
-        for i:=2;i<len(arr);i++ {
-            input:=arr[i]
-
-            diff2 := input-prev_input
-            pos_cond := (diff2>0 && diff<0) || (diff2<0 && diff>0)
-            size_cond := absInt(diff2)<1 || absInt(diff2)>3
-            
-            if (diff2 == 0 || pos_cond || size_cond ) {
-                bad = true
-                break
-            }
-
-            prev_input = input
-
-        }
-        if !bad {
+        if checkLine(arr,breakPoint) == -1{
             safe_count++
+            continue
         }
+        if checkLine(arr,breakPoint+1) == -1{
+            safe_count++
+            continue
+        }
+        fmt.Println("defective")
+
     }
     
     fmt.Println("total_count:",total_count,"safe_count:",safe_count)
